@@ -4,113 +4,63 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import pageobject.HomePage;
-import static org.junit.Assert.assertTrue;
 
+import static org.junit.Assert.assertEquals;
+
+@RunWith(Parameterized.class)
 public class FAQDropdownListTests {
     private WebDriver driver;
     private HomePage homePage;
+    private int questionIndex;
+    private String expectedAnswer;
+
+    public FAQDropdownListTests(int questionIndex, String expectedAnswer) {
+        this.questionIndex = questionIndex;
+        this.expectedAnswer = expectedAnswer;
+    }
+    // Сделал параметризацию на вопросы и ответы
+    @Parameterized.Parameters
+    public static Object[][] questionsAndAnswers() {
+        return new Object[][]{
+                {0, "Сутки — 400 рублей. Оплата курьеру — наличными или картой."},
+                {1, "Пока что у нас так: один заказ — один самокат. Если хотите покататься с друзьями, можете просто сделать несколько заказов — один за другим."},
+                {2, "Допустим, вы оформляете заказ на 8 мая. Мы привозим самокат 8 мая в течение дня. Отсчёт времени аренды начинается с момента, когда вы оплатите заказ курьеру. Если мы привезли самокат 8 мая в 20:30, суточная аренда закончится 9 мая в 20:30."},
+                {3, "Только начиная с завтрашнего дня. Но скоро станем расторопнее."},
+                {4, "Пока что нет! Но если что-то срочное — всегда можно позвонить в поддержку по красивому номеру 1010."},
+                {5, "Самокат приезжает к вам с полной зарядкой. Этого хватает на восемь суток — даже если будете кататься без передышек и во сне. Зарядка не понадобится."},
+                {6, "Да, пока самокат не привезли. Штрафа не будет, объяснительной записки тоже не попросим. Все же свои."},
+                {7, "Да, обязательно. Всем самокатов! И Москве, и Московской области."}
+        };
+    }
 
     @Before
     public void setup() {
-        // Драйвер хром
+        // Выбор драйвера пока оставил так, извиняюсь обязательно прочитаю и буду пользоваться
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        // Драйвер фаерфокс
         // WebDriverManager.firefoxdriver().setup();
         // driver = new FirefoxDriver();
+        driver.manage().window().maximize(); // запуск браузера в полноэкранном режиме
         driver.get("https://qa-scooter.praktikum-services.ru/");
         homePage = new HomePage(driver);
-        // Принятие кук
         homePage.clickCookieButton();
     }
 
     @Test
-    public void testFirstQuestion(){
-        // Клик по первому вопросу
-        homePage.ClickDropDown0();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText0();
-        //Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testSecondQuestion(){
-        // Клик по второму вопросу
-        homePage.ClickDropDown1();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText1();
-        //Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testThirdQuestion() {
-        // Клик по третьему вопросу
-        homePage.ClickDropDown2();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText2();
-        // Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testFourthQuestion() {
-        // Клик по четвертому вопросу
-        homePage.ClickDropDown3();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText3();
-        //Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testFifthQuestion(){
-        // Клик по пятому вопросу
-        homePage.ClickDropDown4();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText4();
-        // Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testSixthQuestion(){
-        // Клик по шестому вопросу
-        homePage.ClickDropDown5();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText5();
-        // Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testSeventhQuestion(){
-        // Клик по седьмому вопросу
-        homePage.ClickDropDown6();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText6();
-        // Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
-    }
-
-    @Test
-    public void testEighthQuestion(){
-        // Клик по восьмому вопросу
-        homePage.ClickDropDown7();
-        // Получение текста ответа
-        String actualAnswer = homePage.getDropDownAnswerText7();
-        // Проверка, что текст ответа не пустой
-        assertTrue(!actualAnswer.isEmpty());
+    public void testQuestionAndAnswer() {
+        homePage.clickQuestionByIndex(questionIndex);
+        String actualAnswer = homePage.getAnswerTextByIndex(questionIndex);
+        assertEquals(expectedAnswer, actualAnswer);
     }
 
     @After
-    //Закрыть браузер
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
 }

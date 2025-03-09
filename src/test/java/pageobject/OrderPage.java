@@ -44,18 +44,21 @@ public OrderPage(WebDriver driver){
     private final By commentField = By.xpath("//input[@placeholder='Комментарий для курьера']");
     // Локатор кнопки заказать
     private final By orderButton = By.xpath("//div[@class='Order_Buttons__1xGrp']/button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM') and not(contains(@class, 'Button_Inverted__3IF-i')) and text()='Заказать']");
-    // Локатор кнопки подтверждения
-    //private final By confirmButton = By.xpath("//div[@class='Order_Buttons__1xGrp']/button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM') and not(contains(@class, 'Button_Inverted__3IF-i')) and text()='Да']");
-    //private final By  viewStatus = By.xpath("//div[@class='Order_NextButton__1_rCA']/button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM') and text()='Посмотреть статус']");
+
 
     public void setFirstName(String firstName){
         // Ввод имени
-        driver.findElement(firstNameField).sendKeys(firstName);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement firstNameElement = wait.until(
+                ExpectedConditions.elementToBeClickable(firstNameField));
+        firstNameElement.sendKeys(firstName);
     }
 
     public void setLastName(String lastName){
         // Ввод фамилии
-        driver.findElement(lastNameField).sendKeys(lastName);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebElement lastNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(lastNameField));
+        lastNameElement.sendKeys(lastName);
     }
 
     public void setAddress(String address){
@@ -78,9 +81,10 @@ public OrderPage(WebDriver driver){
     }
 
     public void clickNextButton(){
-        // Ожидаем и кликаем на кнопку далее
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(nextButton)).click();
+        driver.findElement(nextButton).click();
+        // Добавляем ожидание появления поля «Когда привезти самокат»
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(deliveryDateField));
     }
 
     public void setDeliveryDate(String deliveryDate){
