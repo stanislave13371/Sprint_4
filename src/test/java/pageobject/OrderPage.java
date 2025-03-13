@@ -14,10 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class OrderPage {
 private WebDriver driver;
 
-public OrderPage(WebDriver driver){
-    this.driver = driver;
-}
-    // Локаторы для первой страницы заказа
+// Локаторы для первой страницы заказа
     // Локатор для поля Имя
     private final By firstNameField = By.xpath("//input[@class='Input_Input__1iN_Z Input_Responsible__1jDKN']");
     // Локатор для поля фамилия
@@ -44,7 +41,23 @@ public OrderPage(WebDriver driver){
     private final By commentField = By.xpath("//input[@placeholder='Комментарий для курьера']");
     // Локатор кнопки заказать
     private final By orderButton = By.xpath("//div[@class='Order_Buttons__1xGrp']/button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM') and not(contains(@class, 'Button_Inverted__3IF-i')) and text()='Заказать']");
+    // Локатор выбора станции метро
+    private static final String METRO_STATION_LOCATOR_TEMPLATE = "//div[contains(@class, 'select-search__select')]//div[text()='%s']";
+    // Локатор Срока аренды
+    private static final String RENTAL_PERIOD_LOCATOR_TEMPLATE = "//div[@class='Dropdown-menu']/div[text()='%s']";
 
+public OrderPage(WebDriver driver){
+    this.driver = driver;
+}
+
+    // Метод формирующий локатор выбора станции метро
+    private By getMetroStationLocator(String stationName) {
+        return By.xpath(String.format(METRO_STATION_LOCATOR_TEMPLATE, stationName));
+    }
+    // Метод формирующий локатор срока аренды
+    private By getRentalPeriodLocator(String rentalPeriod) {
+        return By.xpath(String.format(RENTAL_PERIOD_LOCATOR_TEMPLATE, rentalPeriod));
+    }
 
     public void setFirstName(String firstName){
         // Ввод имени
@@ -71,8 +84,8 @@ public OrderPage(WebDriver driver){
         driver.findElement(metroStationField).click();
         // Ввод текста для поиска станции
         driver.findElement(metroStationField).sendKeys(metroStation);
-        // Клик на станцию в выпадающем списке
-        driver.findElement(By.xpath("//div[contains(@class, 'select-search__select')]//div[text()='" + metroStation + "']")).click(); // надо смотреть локаторы
+        // Клик на станцию в выпадающем списке (тут использование исправленного локатора)
+        driver.findElement(getMetroStationLocator(metroStation)).click();
     }
 
     public void setPhoneNumber(String phoneNumber){
@@ -98,9 +111,9 @@ public OrderPage(WebDriver driver){
     public void setRentalPeriod(String rentalPeriod){
         // Клик на срок аренды
         driver.findElement(rentalPeriodField).click();
-        // Клик на вариант срока аренды
-        driver.findElement(By.xpath("//div[@class='Dropdown-menu']/div[text()='" + rentalPeriod + "']")).click();
-        // Ожидаем перед проверкой
+        // Клик на выбранный срок аренды в выпадающем списке (с использованием динамического локатора)
+        driver.findElement(getRentalPeriodLocator(rentalPeriod)).click();
+        // ожидание выбранного срока аренды
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(rentalPeriodSelected));
     }
