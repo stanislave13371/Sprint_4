@@ -58,7 +58,7 @@ public class FAQDropdownListTests {
         String actualAnswer = homePage.getAnswerTextByIndex(questionIndex);
         assertEquals(expectedAnswer, actualAnswer);
     }
-
+// Закрыть браузер
     @After
     public void tearDown() {
         driver.quit();

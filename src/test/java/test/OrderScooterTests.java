@@ -62,10 +62,10 @@ public class OrderScooterTests {
 
     @Before
     public void setUp() {
-        // WebDriverManager.chromedriver().setup();
-        // driver = new ChromeDriver();
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+        //WebDriverManager.firefoxdriver().setup();
+        //driver = new FirefoxDriver();
         driver.manage().window().maximize(); // полноэкранный режим
         driver.get("https://qa-scooter.praktikum-services.ru/");
         homePage = new HomePage(driver);

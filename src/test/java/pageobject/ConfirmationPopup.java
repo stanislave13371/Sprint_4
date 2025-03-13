@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class ConfirmationPopup {
     private WebDriver driver;
-    // Локатор к попапу
+    // Локатор к попапу. Перенес в класс
     private final By confirmButton = By.xpath("//button[text()='Да' and contains(@class, 'Button_Button__ra12g')]");
     private final By viewStatus = By.xpath("//div[@class='Order_NextButton__1_rCA']/button[contains(@class, 'Button_Button__ra12g') and contains(@class, 'Button_Middle__1CSJM') and text()='Посмотреть статус']");
 

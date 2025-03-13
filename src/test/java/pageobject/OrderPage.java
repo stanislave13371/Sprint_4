@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class OrderPage {
 private WebDriver driver;
 
-// Локаторы для первой страницы заказа
+// Локаторы для первой страницы заказа. Перенес в класс
     // Локатор для поля Имя
     private final By firstNameField = By.xpath("//input[@class='Input_Input__1iN_Z Input_Responsible__1jDKN']");
     // Локатор для поля фамилия

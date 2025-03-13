@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class HomePage {
     private WebDriver driver;
-    // Измененные локаторы
+    // Измененные локаторы. Перенес в класс
     private static final By COOKIE_BUTTON = By.className("App_CookieButton__3cvqF");
     private static final By ORDER_BUTTON_TOP = By.xpath("//button[@class='Button_Button__ra12g']");
     private static final By ORDER_BUTTON_MIDDLE = By.xpath("//div[@class='Home_FinishButton__1_cWm']/button[@class='Button_Button__ra12g Button_UltraBig__UU3Lp']");
