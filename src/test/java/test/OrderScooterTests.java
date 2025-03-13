@@ -6,18 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pageobject.ConfirmationPopup;
 import pageobject.HomePage;
 import pageobject.OrderPage;
-
-import java.time.Duration;
 
 import static org.junit.Assert.assertTrue;
 
@@ -91,8 +85,6 @@ public class OrderScooterTests {
     }
 
     private void fillOrderFormAndConfirm() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='* Имя']")));
         orderPage.setFirstName(firstName);
         orderPage.setLastName(lastName);
         orderPage.setAddress(address);

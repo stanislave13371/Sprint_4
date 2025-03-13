@@ -14,15 +14,20 @@ public class HomePage {
     public HomePage(WebDriver driver) {
         this.driver = driver;
     }
+    // Добавил static
+    private static final By COOKIE_BUTTON = By.className("App_CookieButton__3cvqF");
+    private static final By ORDER_BUTTON_TOP = By.xpath("//button[@class='Button_Button__ra12g']");
+    private static final By ORDER_BUTTON_MIDDLE = By.xpath("//div[@class='Home_FinishButton__1_cWm']/button[@class='Button_Button__ra12g Button_UltraBig__UU3Lp']");
+    private static final String ANSWER_LOCATOR_TEMPLATE = "//div[@id='accordion__panel-%d']/p";
+    private static final String QUESTION_LOCATOR_TEMPLATE = "accordion__heading-%d";
 
-    private final By COOKIE_BUTTON = By.className("App_CookieButton__3cvqF");
-
+    // Оставляю, так как использую динамические локаторы
     private By getQuestionLocator(int index) {
-        return By.id("accordion__heading-" + index);
+        return By.id(String.format(QUESTION_LOCATOR_TEMPLATE, index));
     }
-
+    // Сменил с динамического локатора, на константу
     private By getAnswerLocator(int index) {
-        return By.xpath("//div[@id='accordion__panel-" + index + "']/p");
+        return By.xpath(String.format(ANSWER_LOCATOR_TEMPLATE, index));
     }
 
     public void clickCookieButton() {
@@ -38,9 +43,6 @@ public class HomePage {
         WebElement answerElement = wait.until(ExpectedConditions.visibilityOfElementLocated(getAnswerLocator(index)));
         return answerElement.getText();
     }
-
-    private final By ORDER_BUTTON_TOP = By.xpath("//button[@class='Button_Button__ra12g']");
-    private final By ORDER_BUTTON_MIDDLE = By.xpath("//div[@class='Home_FinishButton__1_cWm']/button[@class='Button_Button__ra12g Button_UltraBig__UU3Lp']");
 
     public void clickOrderButtonTop() {
         driver.findElement(ORDER_BUTTON_TOP).click();
